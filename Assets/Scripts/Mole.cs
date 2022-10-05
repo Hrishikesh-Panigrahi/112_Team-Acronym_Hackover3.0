@@ -15,7 +15,7 @@ public class Mole : MonoBehaviour
   [Header("GameManager")]
   [SerializeField] private GameManager gameManager;
 
-    private Vector2 startPosition = new Vector2(0f, -4.0f);
+    private Vector2 startPosition = new Vector2(0f, -4.0f); 
   private Vector2 endPosition = new Vector2(0f,-0.5f);
   // How long it takes to show a mole.
   private float showDuration = 0.5f;
