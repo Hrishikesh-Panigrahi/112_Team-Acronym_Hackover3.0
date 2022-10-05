@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour
 
   [Header("UI objects")]
   [SerializeField] private GameObject playButton;
+  [SerializeField] private GameObject GameObject;
+  
+    [SerializeField] private TMPro.TextMeshProUGUI scoreText;
+
 
   private float startingTime = 30f;
 
@@ -20,6 +24,10 @@ public class GameManager : MonoBehaviour
   public bool playing = false;
 
 public void GameOver(int type) {
+    
+    
+    GameObject.SetActive(true);
+
     // // Show the message.
     // if (type == 0) {
     //   outOfTimeText.SetActive(true);
@@ -27,6 +35,8 @@ public void GameOver(int type) {
     //   bombText.SetActive(true);
     // }
     // // Hide all moles.
+
+
     foreach (Mole mole in moles) {
       mole.stopgame();
     }
@@ -69,9 +79,12 @@ public void GameOver(int type) {
         GameOver(0);
       }
     //   timeText.text = $"{(int)timeRemaining / 60}:{(int)timeRemaining % 60:D2}";
+
+
       // Check if we need to start any more moles.
       if (currentMoles.Count <= (score / 10)) {
         // Choose a random mole.
+        
         int index = Random.Range(0, moles.Count);
         // Doesn't matter if it's already doing something, we'll just try again next frame.
         if (!currentMoles.Contains(moles[index])) {
@@ -85,7 +98,7 @@ public void GameOver(int type) {
   public void AddScore(int moleIndex) {
     // Add and update score.
     score += 1;
-    // scoreText.text = $"{score}";
+    scoreText.text = $"{score}";
     // Increase time by a little bit.
     timeRemaining += 1;
     // Remove from active moles.
