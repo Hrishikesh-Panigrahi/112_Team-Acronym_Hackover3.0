@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Mole : MonoBehaviour
 {
@@ -130,7 +131,11 @@ public enum MoleType { Standard, HardHat, Bomb };
           break;
         case MoleType.Bomb:
         //   // Game over, 1 for bomb.
-          gameManager.GameOver(1);
+        gameManager.AddBombScore(moleIndex);
+        StopAllCoroutines();
+            StartCoroutine(QuickHide());
+             hittable = false;
+          
           break;
         default:
           break;
@@ -183,6 +188,8 @@ public enum MoleType { Standard, HardHat, Bomb };
 
 
   private void SetLevel(int level) {
+
+    if(SceneManager.GetActiveScene().buildIndex==1){
     // As level increases increse the bomb rate to 0.25 at level 10.
     bombRate = Mathf.Min(level * 0.025f, 0.25f);
 
@@ -193,6 +200,18 @@ public enum MoleType { Standard, HardHat, Bomb };
     float durationMin = Mathf.Clamp(1 - level * 0.1f, 0.01f, 1f);
     float durationMax = Mathf.Clamp(2 - level * 0.1f, 0.01f, 2f);
     duration = Random.Range(durationMin, durationMax);
+    }
+    else if(SceneManager.GetActiveScene().buildIndex==2){
+    // As level increases increse the bomb rate to 0.25 at level 10.
+    bombRate = Mathf.Min(level * 0.05f, 0.5f);
+
+    // Increase the amounts of HardHats until 100% at level 40.
+    hardRate = Mathf.Min(level * 0.05f, 10f);
+
+    // Duration bounds get quicker as we progress. No cap on insanity.
+    float durationMin = Mathf.Clamp(1 - level * 0.1f, 0.01f, 1f);
+    float durationMax = Mathf.Clamp(2 - level * 0.1f, 0.01f, 2f);
+    duration  = Random.Range(durationMin, durationMax);}
   }
 
     // Start is called before the first frame update
@@ -207,12 +226,4 @@ public enum MoleType { Standard, HardHat, Bomb };
     StopAllCoroutines();
   }
 
-
-    // // Update is called once per frame
-    // void Update(){
-    //     SetLevel(0);
-    //     // CreateNext();
-    //     // StartCoroutine(ShowHide(startPosition, endPosition));
-    // }
-   
 }

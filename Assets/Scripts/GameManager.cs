@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
   [SerializeField] private GameObject playButton;
   [SerializeField] private GameObject GameObject;
   
-    [SerializeField] private TMPro.TextMeshProUGUI scoreText;
+  [SerializeField] private TMPro.TextMeshProUGUI scoreText;
+  [SerializeField] private TMPro.TextMeshProUGUI BombText;
 
 
   private float startingTime = 30f;
@@ -21,13 +22,11 @@ public class GameManager : MonoBehaviour
   private float timeRemaining;
   private HashSet<Mole> currentMoles = new HashSet<Mole>();
   private int score;
+  private int bscore;
   public bool playing = false;
 
 public void GameOver(int type) {
     
-    
-    GameObject.SetActive(true);
-
     // // Show the message.
     // if (type == 0) {
     //   outOfTimeText.SetActive(true);
@@ -35,7 +34,6 @@ public void GameOver(int type) {
     //   bombText.SetActive(true);
     // }
     // // Hide all moles.
-
 
     foreach (Mole mole in moles) {
       mole.stopgame();
@@ -54,7 +52,7 @@ public void GameOver(int type) {
     playButton.SetActive(false);
     // outOfTimeText.SetActive(false);
     // bombText.SetActive(false);
-    // gameUI.SetActive(true);
+    GameObject.SetActive(true);
     // Hide all the visible moles.
     for (int i = 0; i < moles.Count; i++) {
       moles[i].Hide();
@@ -93,6 +91,20 @@ public void GameOver(int type) {
         }
       }
     }
+  }
+
+  public void AddBombScore(int moleIndex) {
+ 
+    bscore += 1;
+    BombText.text = $"{bscore}";
+
+    if(bscore==3){
+      GameOver(1);
+    }
+
+    // timeRemaining -= 2;
+   
+    currentMoles.Remove(moles[moleIndex]);
   }
 
   public void AddScore(int moleIndex) {
