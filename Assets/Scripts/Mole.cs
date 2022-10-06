@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Mole : MonoBehaviour
@@ -39,6 +40,8 @@ public enum MoleType { Standard, HardHat, Bomb };
      private int moleIndex = 0;
 
   private int lives;
+
+public int difficulty= LevelManager.selectedlevel;
 
     public void SetIndex(int index) {
     moleIndex = index;
@@ -189,7 +192,7 @@ public enum MoleType { Standard, HardHat, Bomb };
 
   private void SetLevel(int level) {
 
-    if(SceneManager.GetActiveScene().buildIndex==1){
+    if(difficulty == 1){
     // As level increases increse the bomb rate to 0.25 at level 10.
     bombRate = Mathf.Min(level * 0.025f, 0.25f);
 
@@ -201,22 +204,37 @@ public enum MoleType { Standard, HardHat, Bomb };
     float durationMax = Mathf.Clamp(2 - level * 0.1f, 0.01f, 2f);
     duration = Random.Range(durationMin, durationMax);
     }
-    else if(SceneManager.GetActiveScene().buildIndex==2){
+    else if(difficulty == 2){
     // As level increases increse the bomb rate to 0.25 at level 10.
     bombRate = Mathf.Min(level * 0.05f, 0.5f);
 
     // Increase the amounts of HardHats until 100% at level 40.
-    hardRate = Mathf.Min(level * 0.05f, 10f);
+    hardRate = Mathf.Min(level * 0.05f, 2f);
 
     // Duration bounds get quicker as we progress. No cap on insanity.
     float durationMin = Mathf.Clamp(1 - level * 0.1f, 0.01f, 1f);
     float durationMax = Mathf.Clamp(2 - level * 0.1f, 0.01f, 2f);
     duration  = Random.Range(durationMin, durationMax);}
+
+    else if(difficulty == 3){
+    // As level increases increse the bomb rate to 0.25 at level 10.
+    bombRate = Mathf.Min(level * 0.075f, 0.75f);
+
+    // Increase the amounts of HardHats until 100% at level 40.
+    hardRate = Mathf.Min(level * 0.075f, 3f);
+
+    // Duration bounds get quicker as we progress. No cap on insanity.
+    float durationMin = Mathf.Clamp(1 - level * 0.1f, 0.01f, 1f);
+    float durationMax = Mathf.Clamp(2 - level * 0.1f, 0.01f, 2f);
+    duration  = Random.Range(durationMin, durationMax);}
+
   }
 
     // Start is called before the first frame update
      public void Activate(int level) {
+    // Debug.Log(difficulty);
     SetLevel(level);
+
     CreateNext();
     StartCoroutine(ShowHide(startPosition, endPosition));
   }
@@ -224,6 +242,11 @@ public enum MoleType { Standard, HardHat, Bomb };
   public void stopgame(){
     hittable = false;
     StopAllCoroutines();
+  }
+
+   void start(){
+    Debug.Log(difficulty);
+    // print(difficulty);
   }
 
 }
