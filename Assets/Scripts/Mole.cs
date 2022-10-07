@@ -41,7 +41,7 @@ public enum MoleType { Standard, HardHat, Bomb };
 
   private int lives;
 
-public int difficulty= LevelManager.selectedlevel;
+// public int difficulty = LevelManager.selectedlevel;   Not needed
 
     public void SetIndex(int index) {
     moleIndex = index;
@@ -192,7 +192,7 @@ public int difficulty= LevelManager.selectedlevel;
 
   private void SetLevel(int level) {
 
-    if(difficulty == 1){
+    if(LevelManager.selectedlevel == 1){
     // As level increases increse the bomb rate to 0.25 at level 10.
     bombRate = Mathf.Min(level * 0.025f, 0.25f);
 
@@ -204,7 +204,7 @@ public int difficulty= LevelManager.selectedlevel;
     float durationMax = Mathf.Clamp(2 - level * 0.1f, 0.01f, 2f);
     duration = Random.Range(durationMin, durationMax);
     }
-    else if(difficulty == 2){
+    else if(LevelManager.selectedlevel == 2){
     // As level increases increse the bomb rate to 0.25 at level 10.
     bombRate = Mathf.Min(level * 0.05f, 0.5f);
 
@@ -216,7 +216,7 @@ public int difficulty= LevelManager.selectedlevel;
     float durationMax = Mathf.Clamp(2 - level * 0.1f, 0.01f, 2f);
     duration  = Random.Range(durationMin, durationMax);}
 
-    else if(difficulty == 3){
+    else if(LevelManager.selectedlevel == 3){
     // As level increases increse the bomb rate to 0.25 at level 10.
     bombRate = Mathf.Min(level * 0.075f, 0.75f);
 
@@ -244,9 +244,8 @@ public int difficulty= LevelManager.selectedlevel;
     StopAllCoroutines();
   }
 
-   void start(){
-    Debug.Log(difficulty);
-    // print(difficulty);
+  void Update(){
+        Debug.Log(LevelManager.selectedlevel);
   }
 
 }
