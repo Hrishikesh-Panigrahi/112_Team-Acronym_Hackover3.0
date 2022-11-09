@@ -47,9 +47,6 @@ TagManager:
   - name: BG2
     uniqueID: 1098658425
     locked: 0
-  - name: forest1
-    uniqueID: 4266536779
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

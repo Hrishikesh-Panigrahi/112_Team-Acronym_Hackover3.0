@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
   private float timeRemaining;
   private HashSet<Mole> currentMoles = new HashSet<Mole>();
   private int score;
-  private int bscore;
+  private int bscore=3;
   public bool playing = false;
 
 public void GameOver(int type) {
@@ -95,10 +95,10 @@ public void GameOver(int type) {
 
   public void AddBombScore(int moleIndex) {
  
-    bscore += 1;
+    bscore -= 1;
     BombText.text = $"{bscore}";
 
-    if(bscore==3){
+    if(bscore==0){
       GameOver(1);
     }
 

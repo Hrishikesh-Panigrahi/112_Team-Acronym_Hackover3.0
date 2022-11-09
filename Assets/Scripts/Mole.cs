@@ -36,11 +36,13 @@ private bool hittable = true;
 public enum MoleType { Standard, HardHat, Bomb };
   private MoleType moleType;
   private float hardRate = 0.25f;
-    private float bombRate = 0f;
+    private float bombRate = 0.09f;
      private int moleIndex = 0;
 
   private int lives;
 
+private float timer = 20f;
+private float currenttime = 0f;
 // public int difficulty = LevelManager.selectedlevel;   Not needed
 
     public void SetIndex(int index) {
@@ -105,7 +107,7 @@ public enum MoleType { Standard, HardHat, Bomb };
     boxSizeHidden = new Vector2(boxSize.x, 0f);
   }
 
-   private void OnMouseDown() {
+private void OnMouseDown() {
     if (hittable) {
       switch (moleType) {
         case MoleType.Standard:
@@ -146,14 +148,14 @@ public enum MoleType { Standard, HardHat, Bomb };
     }
   }
 
- public void Hide() {
+public void Hide() {
     // Set the appropriate mole parameters to hide it.
     transform.localPosition = startPosition;
     boxCollider2D.offset = boxOffsetHidden;
     boxCollider2D.size = boxSizeHidden;
   }
 
-  private IEnumerator QuickHide() {
+private IEnumerator QuickHide() {
     yield return new WaitForSeconds(0.25f);
     // Whilst we were waiting we may have spawned again here, so just
     // check that hasn't happened before hiding it. This will stop it
@@ -163,7 +165,24 @@ public enum MoleType { Standard, HardHat, Bomb };
     }
   }
 
- private void CreateNext() {
+private void CreateNext() {
+  if (currenttime >=10){
+    moleType = MoleType.Standard;
+        spriteRenderer.sprite = mole;
+        lives = 1;
+  }
+  else if(currenttime >=5 && currenttime <10){
+    moleType = MoleType.HardHat;
+        spriteRenderer.sprite = moleHardHat;
+        lives = 2;
+  }
+  else if(currenttime <5 && currenttime <=0){
+// bomb ka code aayega for now will spawn noemal mole
+ moleType = MoleType.Standard;
+        spriteRenderer.sprite = mole;
+        lives = 1;
+  }
+  else{
     float random = Random.Range(0f, 1f);
     if (random < bombRate) {
       // Make a bomb.
@@ -185,12 +204,13 @@ public enum MoleType { Standard, HardHat, Bomb };
         lives = 1;
       }
     }
+  }
     // Mark as hittable so we can register an onclick event.
     hittable = true;
   }
 
 
-  private void SetLevel(int level) {
+private void SetLevel(int level) {
 
     if(LevelManager.selectedlevel == 1){
     // As level increases increse the bomb rate to 0.25 at level 10.
@@ -204,6 +224,7 @@ public enum MoleType { Standard, HardHat, Bomb };
     float durationMax = Mathf.Clamp(2 - level * 0.1f, 0.01f, 2f);
     duration = Random.Range(durationMin, durationMax);
     }
+    
     else if(LevelManager.selectedlevel == 2){
     // As level increases increse the bomb rate to 0.25 at level 10.
     bombRate = Mathf.Min(level * 0.05f, 0.5f);
@@ -227,25 +248,38 @@ public enum MoleType { Standard, HardHat, Bomb };
     float durationMin = Mathf.Clamp(1 - level * 0.1f, 0.01f, 1f);
     float durationMax = Mathf.Clamp(2 - level * 0.1f, 0.01f, 2f);
     duration  = Random.Range(durationMin, durationMax);}
-
   }
 
     // Start is called before the first frame update
-     public void Activate(int level) {
+public void Activate(int level) {
     // Debug.Log(difficulty);
-    SetLevel(level);
+    // currenttime = timer;
+    if(currenttime == 0){
+ SetLevel(level);
 
     CreateNext();
     StartCoroutine(ShowHide(startPosition, endPosition));
+    }
+    else{
+    // SetLevel(level);
+
+    CreateNext();
+    StartCoroutine(ShowHide(startPosition, endPosition));
+    }
   }
 
-  public void stopgame(){
+public void stopgame(){
     hittable = false;
     StopAllCoroutines();
   }
 
-  void Update(){
-        Debug.Log(LevelManager.selectedlevel);
+void Start(){
+currenttime = timer;
+}
+
+void Update(){
+  currenttime -= 1 * Time.deltaTime;
+        Debug.Log(currenttime);
   }
 
 }
