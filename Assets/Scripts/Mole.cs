@@ -166,22 +166,36 @@ private IEnumerator QuickHide() {
   }
 
 private void CreateNext() {
+  // first 5 secs
   if (currenttime >=10){
     moleType = MoleType.Standard;
         spriteRenderer.sprite = mole;
         lives = 1;
   }
+
+  // next 5 secs
   else if(currenttime >=5 && currenttime <10){
     moleType = MoleType.HardHat;
         spriteRenderer.sprite = moleHardHat;
         lives = 2;
   }
-  else if(currenttime <5 && currenttime <=0){
-// bomb ka code aayega for now will spawn noemal mole
- moleType = MoleType.Standard;
+
+  // next 5 secs
+  else if(currenttime <5 && currenttime >=0){
+// bomb with normal 
+float random = Random.Range(0f, 0.15f);
+    if (random < bombRate) {
+      moleType = MoleType.Bomb;
+      animator.enabled = true;
+    } else {
+      animator.enabled = false;
+       moleType = MoleType.Standard;
         spriteRenderer.sprite = mole;
         lives = 1;
+    }
   }
+
+
   else{
     float random = Random.Range(0f, 1f);
     if (random < bombRate) {
@@ -226,10 +240,7 @@ private void SetLevel(int level) {
     }
     
     else if(LevelManager.selectedlevel == 2){
-    // As level increases increse the bomb rate to 0.25 at level 10.
     bombRate = Mathf.Min(level * 0.05f, 0.5f);
-
-    // Increase the amounts of HardHats until 100% at level 40.
     hardRate = Mathf.Min(level * 0.05f, 2f);
 
     // Duration bounds get quicker as we progress. No cap on insanity.
@@ -238,10 +249,8 @@ private void SetLevel(int level) {
     duration  = Random.Range(durationMin, durationMax);}
 
     else if(LevelManager.selectedlevel == 3){
-    // As level increases increse the bomb rate to 0.25 at level 10.
-    bombRate = Mathf.Min(level * 0.075f, 0.75f);
 
-    // Increase the amounts of HardHats until 100% at level 40.
+    bombRate = Mathf.Min(level * 0.075f, 0.75f);
     hardRate = Mathf.Min(level * 0.075f, 3f);
 
     // Duration bounds get quicker as we progress. No cap on insanity.
@@ -252,17 +261,12 @@ private void SetLevel(int level) {
 
     // Start is called before the first frame update
 public void Activate(int level) {
-    // Debug.Log(difficulty);
-    // currenttime = timer;
     if(currenttime == 0){
- SetLevel(level);
-
+    SetLevel(level);
     CreateNext();
     StartCoroutine(ShowHide(startPosition, endPosition));
     }
     else{
-    // SetLevel(level);
-
     CreateNext();
     StartCoroutine(ShowHide(startPosition, endPosition));
     }
@@ -279,7 +283,6 @@ currenttime = timer;
 
 void Update(){
   currenttime -= 1 * Time.deltaTime;
-        Debug.Log(currenttime);
   }
 
 }

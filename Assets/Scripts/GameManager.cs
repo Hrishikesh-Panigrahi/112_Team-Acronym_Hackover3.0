@@ -71,7 +71,7 @@ public void GameOver(int type) {
      void Update() {
     if (playing) {
       // Update time.
-      timeRemaining -= Time.deltaTime;
+      // timeRemaining -= Time.deltaTime;
       if (timeRemaining <= 0) {
         timeRemaining = 0;
         GameOver(0);
@@ -112,16 +112,16 @@ public void GameOver(int type) {
     score += 1;
     scoreText.text = $"{score}";
     // Increase time by a little bit.
-    timeRemaining += 1;
+    // timeRemaining += 1;
     // Remove from active moles.
     currentMoles.Remove(moles[moleIndex]);
   }
 
   public void Missed(int moleIndex, bool isMole) {
-    if (isMole) {
-      // Decrease time by a little bit.
+    // if (isMole) {
+    //   // Decrease time by a little bit.
       timeRemaining -= 2;
-    }
+    // }
     // Remove from active moles.
     currentMoles.Remove(moles[moleIndex]);
   }
