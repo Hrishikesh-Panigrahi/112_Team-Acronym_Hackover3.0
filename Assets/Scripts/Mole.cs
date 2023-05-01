@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+// Comment 
 public class Mole : MonoBehaviour
 {
  [Header("Graphics")]
